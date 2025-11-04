@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Credit {
@@ -25,4 +25,13 @@ export class Credit {
 
   @Column('decimal', { precision: 10, scale: 2 })
   paymentAmount: number;
+
+  @Column({ default: false })
+  showExpenses: boolean;
+
+  @OneToMany('Payment', 'credit')
+  payments: any[];
+
+  @OneToMany('Expense', 'credit')
+  expenses: any[];
 }

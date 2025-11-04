@@ -18,4 +18,7 @@ export class CreateCreditDto {
 
   @ApiProperty()
   termMonths: number;
+
+  @ApiPropertyOptional({ default: false })
+  showExpenses?: boolean;
 }
