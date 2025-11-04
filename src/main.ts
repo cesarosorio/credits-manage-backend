@@ -8,10 +8,10 @@ async function bootstrap() {
     origin: '*', // Allow all origins, adjust as needed for security
   });
   const config = new DocumentBuilder()
-    .setTitle('Financiera Casa Guacari API')
-    .setDescription('The Financiera Casa Guacari API description')
+    .setTitle('Administración Créditos API')
+    .setDescription('The Administración Créditos API description')
     .setVersion('1.0')
-    .addTag('financiera-casa-guacari')
+    .addTag('administracion-creditos')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);

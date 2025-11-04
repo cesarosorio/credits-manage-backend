@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Header } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
@@ -8,5 +8,16 @@ export class AppController {
   @Get()
   getHello(): string {
     return this.appService.getHello();
+  }
+
+  @Get('readme')
+  getApiDocumentation(): any {
+    return this.appService.getApiDocumentation();
+  }
+
+  @Get('docs')
+  @Header('Content-Type', 'text/html')
+  getApiDocumentationHtml(): string {
+    return this.appService.getApiDocumentationHtml();
   }
 }

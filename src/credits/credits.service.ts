@@ -29,6 +29,7 @@ export class CreditsService {
     credit.lifeInsurance = createCreditDto.lifeInsurance;
     credit.expirationDate = createCreditDto.expirationDate;
     credit.termMonths = createCreditDto.termMonths;
+    credit.showExpenses = createCreditDto.showExpenses ?? false;
 
     // Calculate the payment amount (minimum payment)
     const monthlyRate = calculateMonthlyRate(credit.annualInterestRate);
@@ -44,7 +45,24 @@ export class CreditsService {
   }
 
   async findAll(): Promise<Credit[]> {
-    return this.creditsRepository.find();
+    return (await this.creditsRepository.find()).sort(
+      (a, b) => a.expirationDate.getTime() - b.expirationDate.getTime(),
+    );
+  }
+
+  async findByExpensives(hasExpensives: boolean): Promise<Credit[]> {
+    return this.creditsRepository.find({
+      where: { showExpenses: hasExpensives },
+      order: { expirationDate: 'ASC' },
+    });
+  }
+
+  async findCreditsWithExpensives(): Promise<Credit[]> {
+    return this.findByExpensives(true);
+  }
+
+  async findCreditsWithoutExpensives(): Promise<Credit[]> {
+    return this.findByExpensives(false);
   }
 
   async findOne(id: string): Promise<Credit> {
@@ -85,6 +103,9 @@ export class CreditsService {
     if (updateCreditDto.termMonths !== undefined) {
       credit.termMonths = updateCreditDto.termMonths;
       shouldRecalculate = true;
+    }
+    if (updateCreditDto.showExpenses !== undefined) {
+      credit.showExpenses = updateCreditDto.showExpenses;
     }
 
     // Recalculate payment amount if any financial field changed
